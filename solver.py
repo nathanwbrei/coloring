@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
+from brain import search
+
 def solveIt(inputData):
     # Modify this code to run your optimization algorithm
 
@@ -12,18 +14,20 @@ def solveIt(inputData):
     nodeCount = int(firstLine[0])
     edgeCount = int(firstLine[1])
 
-    edges = []
+    graph = [[] for n in xrange(nodeCount)] 
     for i in range(1, edgeCount + 1):
         line = lines[i]
         parts = line.split()
-        edges.append((int(parts[0]), int(parts[1])))
+        n0 = int(parts[0])
+        n1 = int(parts[1])
+        graph[n0].append(n1)
+        graph[n1].append(n0)
 
-    # build a trivial solution
-    # every node has its own color
-    solution = range(0, nodeCount)
+    num_colors = int(raw_input("Please enter color limit: "))
+    solution = search(num_colors, graph) 
 
     # prepare the solution in the specified output format
-    outputData = str(nodeCount) + ' ' + str(0) + '\n'
+    outputData = str(max(solution)) + ' ' + str(0) + '\n'
     outputData += ' '.join(map(str, solution))
 
     return outputData
